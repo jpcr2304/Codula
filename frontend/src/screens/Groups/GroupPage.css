@@ -1,0 +1,120 @@
+.group-banner-wrapper {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.group-banner-image {
+  height: 200px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 10px;
+}
+
+.group-header-bar {
+  display: flex;
+  padding: 1rem 2rem;
+  gap: 1.5rem;
+  position: relative;
+  margin-top: -10px;
+  align-items: flex-start; 
+}
+
+.group-avatar-container {
+  width: 80px;
+  height: 80px;
+  margin-top: -40px;
+  border-radius: 50%;
+  border: 4px solid #1a1a1b;
+}
+
+.group-avatar-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.group-title-section {
+  flex: 1;
+  min-width: 0; 
+}
+
+.group-title-section h1 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: white;
+}
+
+.group-title-section p {
+  margin: 0;
+  color: #888;
+  font-size: 1rem;
+}
+
+.group-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-outline {
+  border: 1px solid white;
+  background: transparent;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-solid {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-solid {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #007bff;
+  background-color: #007bff;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-solid.outlined {
+  background-color: #fff;
+  color: #007bff;
+}
+
+.btn-solid.outlined:hover {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.btn-outline:hover {
+  background-color: #e0e0e0; 
+}
+.group-description {
+  margin: 0.3rem 0 0;
+  color: #000000;
+  font-size: 1rem;
+  max-width: none;
+}
+
+.clickable {
+  cursor: pointer;
+  color: white;
+  transition: color 0.2s;
+}
+
+.clickable:hover {
+  color: #A78BFA; 
+}

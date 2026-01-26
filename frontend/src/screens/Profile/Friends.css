@@ -1,0 +1,48 @@
+.friends-section {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.friends-title {
+  margin-bottom: 12px;
+  font-size: 16px;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
+}
+
+.friends-empty {
+  font-size: 14px;
+  color: #666;
+  margin: 12px 0;
+}
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.friend-card {
+  text-align: center;
+}
+
+.friend-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  object-fit: cover;
+  object-position: center;
+  margin-bottom: 8px;
+}
+
+.friend-name {
+  display: block;
+  font-size: 13px;
+  color: #444;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

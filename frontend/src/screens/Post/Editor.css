@@ -1,0 +1,226 @@
+.dark-editor .editormd {
+  background-color: #1a1a1b;
+  color: #d7dadc;
+}
+
+.dark-editor .editormd-toolbar {
+  background-color: #2a2a2c;
+  border-color: #3a3c3f;
+}
+
+.dark-editor .editormd-toolbar li a {
+  color: #d7dadc;
+}
+
+.dark-editor .CodeMirror,
+.dark-editor .CodeMirror-scroll {
+  background-color: #1a1a1b !important;
+  color: #d7dadc !important;
+}
+
+.dark-editor .CodeMirror-cursor {
+  border-left: 1px solid #d7dadc !important;
+}
+
+.dark-editor .CodeMirror-selected {
+  background: #3a3c3f !important;
+}
+
+.dark-editor .editormd-preview,
+.dark-editor .editormd-html-preview {
+  background-color: #1a1a1b;
+  color: #d7dadc;
+}
+
+.dark-editor .editormd-preview,
+.dark-editor .editormd-html-preview {
+  background-color: #1a1a1b !important;
+  color: #d7dadc !important;
+}
+
+.dark-editor .editormd-preview pre,
+.dark-editor .editormd-html-preview pre {
+  background-color: #2a2a2c !important;
+  color: #d7dadc !important;
+  border: 1px solid #3a3c3f;
+}
+
+.dark-editor .editormd-preview code,
+.dark-editor .editormd-html-preview code {
+  background-color: #2a2a2c !important;
+  color: #d7dadc !important;
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+.dark-editor .editormd-preview-container {
+  border-left: 1px solid #3a3c3f;
+}
+
+.dark-editor .CodeMirror-gutter {
+  background-color: #1a1a1b !important;
+  color: #888 !important;
+}
+
+.dark-editor .editormd-toolbar {
+  background-color: #2a2a2c !important;
+  border-bottom: 1px solid #3a3c3f;
+}
+
+.dark-editor .editormd-preview,
+.dark-editor .editormd-html-preview,
+.dark-editor .editormd-preview-container {
+  background-color: #1a1a1b !important;
+  color: #d7dadc !important;
+}
+
+.dark-editor .editormd-preview-container pre,
+.dark-editor .editormd-html-preview pre,
+.dark-editor .editormd-preview-container code,
+.dark-editor .editormd-html-preview code {
+  background-color: #2a2a2c !important;
+  color: #d7dadc !important;
+  border: 1px solid #3a3c3f !important;
+}
+
+.dark-editor .editormd-preview-container blockquote,
+.dark-editor .editormd-preview-container ul,
+.dark-editor .editormd-preview-container ol,
+.dark-editor .editormd-preview-container h1,
+.dark-editor .editormd-preview-container h2,
+.dark-editor .editormd-preview-container h3,
+.dark-editor .editormd-preview-container h4,
+.dark-editor .editormd-preview-container h5,
+.dark-editor .editormd-preview-container h6 {
+  color: #d7dadc !important;
+}
+
+.dark-editor .editormd-preview-container {
+  background-color: #1a1a1b !important;
+}
+
+.dark-editor .CodeMirror-activeline-background {
+  background: #2a2a2c !important;
+}
+
+.dark-editor .CodeMirror-gutters {
+  background-color: #1a1a1b !important;
+  border-right: 1px solid #3a3c3f !important;
+}
+
+.dark-editor .editormd-preview {
+  border-left: 1px solid #3a3c3f !important;
+}
+
+.dark-editor .CodeMirror-vscrollbar,
+.dark-editor .CodeMirror-hscrollbar {
+  background-color: #1a1a1b;
+}
+
+.dark-editor .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
+.dark-editor .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
+  background-color: #444;
+  border-radius: 4px;
+}
+
+.dark-editor .CodeMirror {
+  border-right: none !important;
+}
+
+.dark-editor .CodeMirror-scroll {
+  border-right: none !important;
+}
+
+.dark-editor .CodeMirror-sizer {
+  border-right-width: 0 !important;
+}
+
+.dark-editor .CodeMirror-wrap {
+  border-right: 1px solid #3a3c3f !important;
+}
+
+.dark-editor .CodeMirror-sizer {
+  border-right: none !important;
+}
+
+.dark-editor .editormd-toolbar .editormd-menu li a {
+  background: transparent !important;
+  border: none         !important;
+  box-shadow: none     !important;
+  padding: 0            !important; 
+}
+
+.dark-editor .editormd-toolbar .editormd-menu li a:hover {
+  background-color: rgba(255,255,255,0.08) !important;
+  border-radius: 4px;
+}
+
+.dark-editor .editormd-dialog-header{
+  background: #1f1f21 !important;
+  border-radius: 3px 3px 0 0 !important;
+}
+
+.dark-editor .editormd-dialog-container input,
+.dark-editor .editormd-dialog-container select {
+  background: #1a1a1b !important;
+  color:      #d7dadc !important;
+  border-radius: 3px !important;
+}
+
+.dark-editor .editormd-dialog-footer .editormd-btn {
+  background: #2a2a2c !important;
+  color:      #d7dadc !important;
+  border:     1px solid #3a3c3f !important;
+}
+.dark-editor .editormd-dialog-footer .editormd-btn:hover {
+  background: #3a3c3f !important;
+}
+
+.dark-editor .editormd-dialog {
+  background: #2a2a2c !important;
+}
+
+.editormd-dialog-title {
+  color: #d7dadc !important;
+}
+
+.editormd-form label {
+  color: #d7dadc !important;
+}
+
+.dark-editor .editormd-preview pre,
+.dark-editor .editormd-preview code,
+.dark-editor .editormd-html-preview pre,
+.dark-editor .editormd-html-preview code {
+  background: #2a2a2c !important;
+  color: #d7dadc !important;
+  border: 1px solid #3a3c3f !important;
+}
+
+.dark-editor .editormd-preview pre li,
+.dark-editor .editormd-preview pre .code-line,
+.dark-editor .editormd-html-preview pre li,
+.dark-editor .editormd-html-preview pre .code-line {
+  background: #2a2a2c !important;
+  color: #d7dadc !important;
+  border: none !important;
+}
+
+.dark-editor .hljs,
+.dark-editor .hljs-ln {
+  background: #2a2a2c !important;
+  color: #d7dadc !important;
+}
+
+.dark-editor .editormd-preview input,
+.dark-editor .editormd-html-preview input {
+  background: #2a2a2c !important;
+  color: #d7dadc !important;
+  border: 1px solid #3a3c3f !important;
+}
+
+.dark-editor .editormd-preview .line-numbers-rows span,
+.dark-editor .editormd-html-preview .line-numbers-rows span {
+  background: #2a2a2c !important;
+  color: #888 !important;
+}

@@ -1,0 +1,143 @@
+.hover-wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: visible;
+}
+
+.hover-card {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: translateX(-50%);
+  width: 220px;
+  background: #2a2a2c;
+  border: 1.5px solid #A78BFA; 
+  border-radius: 8px;
+  box-shadow: 0 4px 24px 0 rgba(167,139,250,0.18), 0 4px 12px rgba(0, 0, 0, 0.33);
+  padding: 12px;
+  z-index: 9999;
+  display: flex;
+  gap: 12px;
+  color: #d7dadc;
+  transition: border 0.15s, box-shadow 0.15s;
+}
+
+
+.hover-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.hover-info {
+  flex: 1;
+}
+
+.hover-username {
+  display: block;
+  color: white;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.hover-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #fff;
+  font-size: 12px;
+  margin-bottom: 12px;
+}
+
+.circulo {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  color: #fff;
+  font-weight: 600;
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.vermelho {
+  background-color: #A78BFA;
+}
+
+.btn-follow {
+  background: linear-gradient(90deg, #A78BFA 65%, #8B5CF6 100%);
+  color: #23222a;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px 0 rgba(167,139,250,0.12);
+  transition: 
+    background 0.18s,
+    color 0.18s,
+    box-shadow 0.15s;
+}
+
+.btn-follow:hover,
+.btn-follow:focus {
+  background: linear-gradient(90deg, #c4b5fd 65%, #a78bfa 100%);
+  color: #1a1a1b;
+  box-shadow: 0 3px 12px 0 rgba(168,139,250,0.18);
+  outline: none;
+}
+
+.btn-follow.following {
+  background: #23222a;
+  color: #A78BFA;
+  border: 1.2px solid #6D28D9;
+  box-shadow: none;
+  transition: 
+    background 0.18s,
+    color 0.18s,
+    border-color 0.18s;
+}
+
+.btn-follow.following:hover,
+.btn-follow.following:focus {
+  background: #3a2744;
+  color: #f6e9ff;
+  border-color: #A78BFA;
+  outline: none;
+}
+
+
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.friends-grid {
+  overflow: visible;
+}
+
+main {
+  overflow: visible !important;
+  position: relative;
+}
+
+.hover-name,
+.hover-username {
+  display: block;
+  max-width: 140px;   
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.level-label {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+  margin-bottom: 12px;
+}

@@ -1,0 +1,5 @@
+chmod -R o+r ./editor.md
+find ./editor.md -type d -exec chmod o+x {} \;
+
+docker-compose down
+docker-compose up -d --build

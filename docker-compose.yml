@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:13
+    container_name: PG52687-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: socialNetwork
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: always
+
+  users:
+    build:
+      context: ./backend
+      dockerfile: users_service/Dockerfile
+    container_name: PG52687-users_service
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+    restart: always
+
+  posts:
+    build:
+      context: ./backend
+      dockerfile: posts_service/Dockerfile
+    container_name: PG52687-posts_service
+    ports:
+      - "8002:8000"
+    depends_on:
+      - db
+    volumes:
+      - uploads_data:/app/uploads
+    restart: always
+
+  others:
+    build:
+      context: ./backend
+      dockerfile: other_service/Dockerfile
+    container_name: PG52687-others_service
+    ports:
+      - "8003:8000"
+    depends_on:
+      - db
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: PG52687-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - users
+      - posts
+      - others
+    restart: always
+
+
+volumes:
+  pg_data:
+  uploads_data:
