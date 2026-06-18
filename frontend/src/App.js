@@ -4,8 +4,9 @@ import React from 'react';
 //import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';~
 //import { Routes, Route,  Router} from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Register  from './screens/Login/Register'; 
-import Login  from "./screens/Login/Login";
+// import Register  from './screens/Login/Register'; 
+// import Login  from "./screens/Login/Login";
+import Auth from "./screens/Login/Auth";
 import Profile  from "./screens/Profile/Profile";
 import Home  from "./screens/Profile/Home";
 import CreatePost  from "./screens/Post/CreatePost";
@@ -28,8 +29,8 @@ function App() {
   return (
     <Router>
         <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Auth />} />
+          <Route path="/login" element={<Auth />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/home" element={<Home />} />
           <Route path="/create-post" element={<CreatePost />} /> 
@@ -45,7 +46,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/questionnaire" element={<Questionnaire />} />
           <Route path="/questionnaire/2" element={<Questionnaire2 />} /> 
-          <Route path="/" element={<Login />} /> 
+          <Route path="/" element={<Auth />} /> 
         </Routes>
     </Router>
   );
