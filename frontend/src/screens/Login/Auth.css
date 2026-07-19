@@ -13,9 +13,14 @@ body,
 
 body {
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: #17181d;
   font-family: "Inter", sans-serif;
+}
+
+body.auth-page-open {
+  overflow: hidden;
 }
 
 button,

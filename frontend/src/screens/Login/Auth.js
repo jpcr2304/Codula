@@ -106,6 +106,14 @@ function Auth() {
       window.clearInterval(intervalId);
     };
   }, []);
+  
+  useEffect(() => {
+    document.body.classList.add("auth-page-open");
+
+    return () => {
+      document.body.classList.remove("auth-page-open");
+    };
+  }, []);
 
   const validateEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 

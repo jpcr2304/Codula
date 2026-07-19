@@ -8,16 +8,22 @@ body {
 }
 
 .topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+
+  width: auto;
+  height: 90px;
+  padding: 10px 20px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #2a2a2c; 
-  padding: 10px 20px;
-  position: fixed;
-  top: 0;
-  z-index: 999;
-  width: 100%;
-  height: 70px;
+
+  background-color: #2a2a2c;
+  box-sizing: border-box;
 }
 
 .navbar-left {
@@ -36,33 +42,6 @@ body {
   display: flex;
   justify-content: center;
 }
-
-.search-input {
-  width: 200%;
-  max-width: 800px;
-  padding: 8px 10px;
-  border-radius: 8px;
-  outline: none;
-  background-color: #1e1e1f;
-  border: 1px solid #3a3c3f;
-  color: #ffffff;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-  border-radius: 50px;
-}
-
-.search-input::placeholder {
-  color: #999999;
-}
-
-.search-input:hover {
-  background-color: #2f3032; 
-}
-
-.search-input:focus {
-  background-color: #2f3032;
-  border-color: white; 
-}
-
 
 .navbar-right {
   display: flex;
@@ -116,22 +95,57 @@ body {
 
 .profile-container {
   display: grid;
-  grid-template-columns: 250px 1fr 250px;
+  grid-template-columns: 250px minmax(0, 1fr) 250px;
+  grid-template-areas: "left-sidebar content right-sidebar";
   gap: 20px;
-  min-height: calc(100vh - 90px);
-  margin-top: 115px ; 
-  padding-left: 40px;
-  padding-right: 40px;
+
+  min-height: calc(100vh - 115px);
+  margin-top: 115px;
+  padding: 0 40px 30px;
 }
 
 
 .sidebar {
-  position: sticky;
-  top: 115px;   
-  align-self: start;
-  height: fit-content;
-  max-height: calc(100vh - 120px);
+  grid-area: left-sidebar;
+
+  position: fixed;
+  top: 115px;
+  bottom: 20px;
+  left: 40px;
+
+  width: 250px;
   overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: thin;
+  scrollbar-color: #a78bfa transparent;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #a78bfa;
+  border-radius: 999px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #8b5cf6;
+}
+
+.profile-container > main {
+  grid-area: content;
+
+  min-width: 0;
+  width: 100%;
+
+  border-radius: 0;
+  overflow: visible;
 }
 
 .profile-section {
@@ -262,12 +276,6 @@ body {
 
 .icon-btn:hover svg {
   color: #8B5CF6; 
-}
-
-main {
-  flex: 1;
-  border-radius: 0;
-  overflow-y: auto;
 }
 
 .friends-section {
