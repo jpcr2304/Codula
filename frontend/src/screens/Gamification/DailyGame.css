@@ -1,0 +1,312 @@
+.daily-game-page {
+  width: min(100%, 820px);
+  margin: 0 auto 40px;
+}
+
+.daily-game-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 24px;
+  margin-bottom: 18px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 90% 10%, rgba(167, 139, 250, 0.2), transparent 34%),
+    var(--surface);
+  box-shadow: 0 10px 30px var(--shadow-soft);
+}
+
+.daily-game-hero-icon {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.daily-game-kicker {
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.daily-game-hero h1 {
+  margin: 4px 0 6px;
+  color: var(--text-strong);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.daily-game-hero p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.daily-game-prize {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border: 1px solid rgba(167, 139, 250, 0.42);
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.daily-game-prize strong {
+  color: var(--text-strong);
+  font-size: 1.02rem;
+}
+
+.daily-game-card {
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: 0 12px 34px var(--shadow-soft);
+}
+
+.daily-game-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.daily-game-card-header span {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.daily-game-card-header h2 {
+  margin: 10px 0 0;
+  color: var(--text-strong);
+  font-size: 1.35rem;
+}
+
+.daily-game-card-header time {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.daily-game-prompt {
+  margin: 22px 0 12px;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.daily-game-code {
+  margin: 0;
+  padding: 20px;
+  overflow-x: auto;
+  border: 1px solid #38353e;
+  border-radius: 12px;
+  background: #171719;
+  color: #f3f0f7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  font: 0.94rem/1.65 "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.daily-game-code code {
+  background: transparent !important;
+  color: inherit !important;
+}
+
+.daily-game-instruction {
+  margin: 22px 0 10px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+.daily-game-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.daily-game-option {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 11px;
+  background: var(--surface-soft);
+  color: var(--text-strong);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.daily-game-option:not(:disabled):hover {
+  border-color: var(--accent);
+  background: var(--surface-hover);
+  transform: translateY(-1px);
+}
+
+.daily-game-option.selected {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.13);
+}
+
+.daily-game-option:disabled {
+  cursor: default;
+  opacity: 0.72;
+}
+
+.daily-game-option code {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: inherit;
+  font-size: 0.87rem;
+}
+
+.daily-game-option-letter {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--surface-raised);
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.daily-game-feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 13px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 11px;
+}
+
+.daily-game-feedback svg {
+  flex: 0 0 auto;
+}
+
+.daily-game-feedback strong {
+  color: inherit;
+  font-size: 0.9rem;
+}
+
+.daily-game-feedback p {
+  margin: 5px 0 0;
+  color: inherit;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.daily-game-feedback.correct,
+.daily-game-feedback.completed {
+  border-color: rgba(62, 156, 105, 0.45);
+  background: rgba(62, 156, 105, 0.12);
+  color: #69d49a;
+}
+
+.daily-game-feedback.wrong,
+.daily-game-feedback.warning {
+  border-color: rgba(216, 89, 111, 0.45);
+  background: rgba(216, 89, 111, 0.11);
+  color: #f08ba0;
+}
+
+html[data-theme="light"] .daily-game-feedback.correct,
+html[data-theme="light"] .daily-game-feedback.completed {
+  color: #246c46;
+}
+
+html[data-theme="light"] .daily-game-feedback.wrong,
+html[data-theme="light"] .daily-game-feedback.warning {
+  color: #9b3148;
+}
+
+.daily-game-submit {
+  width: 100%;
+  margin-top: 18px;
+  padding: 13px 20px;
+  border: 1px solid var(--accent);
+  border-radius: 11px;
+  background: var(--accent);
+  color: var(--on-accent);
+  cursor: pointer;
+  font-weight: 800;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.daily-game-submit:hover:not(:disabled) {
+  border-color: var(--accent-hover);
+  background: var(--accent-hover);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.daily-game-submit:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.daily-game-state {
+  min-height: 240px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--text-muted);
+}
+
+.daily-game-state p {
+  margin: 0;
+}
+
+.daily-game-state-error {
+  color: #e0778e;
+}
+
+.daily-game-spinner {
+  animation: daily-game-spin 1s linear infinite;
+}
+
+@keyframes daily-game-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .daily-game-hero {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .daily-game-prize {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .daily-game-options {
+    grid-template-columns: 1fr;
+  }
+}

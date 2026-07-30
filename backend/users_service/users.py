@@ -7,11 +7,25 @@ from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 import jwt
 from fastapi import Body, status
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
+from pathlib import Path
+import json
 import re
 
 
-from shared.databasesetup import SessionLocal, User as UserModel, Group as GroupModel, Notification as NotificationModel
+from shared.databasesetup import (
+    SessionLocal,
+    User as UserModel,
+    Group as GroupModel,
+    Notification as NotificationModel,
+    GamificationWallet,
+    DailyGameCompletion,
+)
+
+DAILY_LOGIN_REWARD = 50
+DAILY_GAME_REWARD = 100
+GAME_CYCLE_START = date(2026, 1, 1)
+DAILY_GAMES_PATH = Path(__file__).with_name("daily_games.json")
 
 class UserRegister(BaseModel):
     firstname: str
@@ -72,6 +86,11 @@ class GroupCreate(BaseModel):
     description: Optional[str] = None
     image: Optional[str] = None
     banner_url: Optional[str] = None
+
+
+class DailyGameAnswer(BaseModel):
+    option_index: int = Field(..., ge=0)
+    language: str = "en"
 
 
 class UserPublic(BaseModel):
@@ -150,6 +169,77 @@ def get_current_user(
     
 router = APIRouter(tags=["users"])
 
+
+def utc_today() -> date:
+    return datetime.now(timezone.utc).date()
+
+
+def get_wallet(db: Session, user_id: int, create: bool = False):
+    wallet = (
+        db.query(GamificationWallet)
+        .filter(GamificationWallet.user_id == user_id)
+        .first()
+    )
+    if not wallet and create:
+        wallet = GamificationWallet(user_id=user_id, balance=0)
+        db.add(wallet)
+        db.flush()
+    return wallet
+
+
+def load_daily_games():
+    try:
+        with DAILY_GAMES_PATH.open("r", encoding="utf-8") as games_file:
+            games = json.load(games_file)
+    except (OSError, json.JSONDecodeError) as exc:
+        raise HTTPException(500, detail="Daily games file could not be loaded") from exc
+
+    if not isinstance(games, list) or not games:
+        raise HTTPException(500, detail="Daily games file must contain at least one game")
+
+    required_fields = {"id", "title", "prompt", "language", "code", "options", "correct_option"}
+    for game in games:
+        if not isinstance(game, dict) or not required_fields.issubset(game):
+            raise HTTPException(500, detail="A daily game has an invalid format")
+        if (
+            not isinstance(game["options"], list)
+            or len(game["options"]) < 2
+            or not isinstance(game["correct_option"], int)
+            or game["correct_option"] < 0
+            or game["correct_option"] >= len(game["options"])
+        ):
+            raise HTTPException(500, detail="A daily game has invalid answer options")
+
+    return games
+
+
+def get_daily_game(today: date):
+    games = load_daily_games()
+    day_offset = (today - GAME_CYCLE_START).days
+    return games[day_offset % len(games)]
+
+
+def localized_text(value, language: str):
+    if not isinstance(value, dict):
+        return value
+    normalized_language = "pt" if language == "pt" else "en"
+    return value.get(normalized_language) or value.get("en") or next(iter(value.values()), "")
+
+
+def daily_game_payload(game, today: date, language: str, completed: bool):
+    return {
+        "id": game["id"],
+        "date": today.isoformat(),
+        "title": localized_text(game["title"], language),
+        "prompt": localized_text(game["prompt"], language),
+        "language": game["language"],
+        "code": game["code"],
+        "options": game["options"],
+        "reward": DAILY_GAME_REWARD,
+        "completed": completed,
+        "explanation": localized_text(game.get("explanation", ""), language) if completed else None,
+    }
+
 @router.post("/register")
 def register(user: UserRegister, db: Session = Depends(get_db)):
     first = user.firstname.strip()
@@ -219,6 +309,145 @@ def profile(current=Depends(get_current_user)):
         "memes_allowed": meme_uploads_allowed(current),
         "accepted_responsibility": bool(getattr(current, "accepted_responsibility", False)),
         "accepted_responsibility_at": getattr(current, "accepted_responsibility_at", None),
+    }
+
+
+@router.get("/gamification/status")
+def gamification_status(
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    today = utc_today()
+    wallet = get_wallet(db, current.id)
+    game = get_daily_game(today)
+    completion = (
+        db.query(DailyGameCompletion)
+        .filter(
+            DailyGameCompletion.user_id == current.id,
+            DailyGameCompletion.game_date == today,
+        )
+        .first()
+    )
+
+    return {
+        "balance": wallet.balance if wallet else 0,
+        "daily_bonus": {
+            "available": not wallet or wallet.last_daily_claim != today,
+            "reward": DAILY_LOGIN_REWARD,
+            "date": today.isoformat(),
+        },
+        "daily_game": {
+            "id": game["id"],
+            "completed": completion is not None,
+            "reward": DAILY_GAME_REWARD,
+        },
+    }
+
+
+@router.post("/gamification/daily-bonus/claim")
+def claim_daily_bonus(
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    today = utc_today()
+
+    # Lock the user row so two simultaneous requests cannot claim twice.
+    db.query(UserModel).filter(UserModel.id == current.id).with_for_update().one()
+    wallet = get_wallet(db, current.id, create=True)
+
+    if wallet.last_daily_claim == today:
+        raise HTTPException(409, detail="Daily bonus already claimed")
+
+    wallet.balance = (wallet.balance or 0) + DAILY_LOGIN_REWARD
+    wallet.last_daily_claim = today
+    db.commit()
+    db.refresh(wallet)
+
+    return {
+        "claimed": True,
+        "reward": DAILY_LOGIN_REWARD,
+        "balance": wallet.balance,
+    }
+
+
+@router.get("/gamification/daily-game")
+def daily_game(
+    language: str = Query("en"),
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    today = utc_today()
+    game = get_daily_game(today)
+    completion = (
+        db.query(DailyGameCompletion)
+        .filter(
+            DailyGameCompletion.user_id == current.id,
+            DailyGameCompletion.game_date == today,
+        )
+        .first()
+    )
+    return daily_game_payload(game, today, language, completion is not None)
+
+
+@router.post("/gamification/daily-game/answer")
+def answer_daily_game(
+    answer: DailyGameAnswer,
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    today = utc_today()
+    game = get_daily_game(today)
+
+    if answer.option_index >= len(game["options"]):
+        raise HTTPException(400, detail="Invalid answer option")
+
+    # Serialize reward writes for this user.
+    db.query(UserModel).filter(UserModel.id == current.id).with_for_update().one()
+    completion = (
+        db.query(DailyGameCompletion)
+        .filter(
+            DailyGameCompletion.user_id == current.id,
+            DailyGameCompletion.game_date == today,
+        )
+        .first()
+    )
+    wallet = get_wallet(db, current.id, create=True)
+
+    if completion:
+        return {
+            "correct": True,
+            "already_completed": True,
+            "reward": 0,
+            "balance": wallet.balance,
+            "explanation": localized_text(game.get("explanation", ""), answer.language),
+        }
+
+    if answer.option_index != game["correct_option"]:
+        return {
+            "correct": False,
+            "already_completed": False,
+            "reward": 0,
+            "balance": wallet.balance,
+        }
+
+    wallet.balance = (wallet.balance or 0) + DAILY_GAME_REWARD
+    db.add(
+        DailyGameCompletion(
+            user_id=current.id,
+            game_id=game["id"],
+            game_date=today,
+            reward=DAILY_GAME_REWARD,
+        )
+    )
+    db.commit()
+    db.refresh(wallet)
+
+    return {
+        "correct": True,
+        "already_completed": False,
+        "reward": DAILY_GAME_REWARD,
+        "balance": wallet.balance,
+        "explanation": localized_text(game.get("explanation", ""), answer.language),
     }
 
 

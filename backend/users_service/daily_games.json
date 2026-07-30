@@ -1,0 +1,26 @@
+[
+  {
+    "id": "python-list-reference-01",
+    "title": {
+      "en": "Guess the output",
+      "pt": "Adivinha o output"
+    },
+    "prompt": {
+      "en": "What is the exact output of this Python code?",
+      "pt": "Qual é o output exato deste código Python?"
+    },
+    "language": "python",
+    "code": "numbers = [1, 2]\ncopy = numbers\ncopy.append(3)\nprint(numbers)",
+    "options": [
+      "[1, 2]",
+      "[1, 2, 3]",
+      "[3, 1, 2]",
+      "Error"
+    ],
+    "correct_option": 1,
+    "explanation": {
+      "en": "Both variables reference the same list, so appending through copy also changes numbers.",
+      "pt": "As duas variáveis referenciam a mesma lista, por isso adicionar através de copy também altera numbers."
+    }
+  }
+]

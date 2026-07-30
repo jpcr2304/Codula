@@ -22,6 +22,10 @@ import {
   Pencil,
   Moon,
   Sun,
+  Coins,
+  Gamepad2,
+  Gift,
+  X,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -45,6 +49,9 @@ function MainLayout({ children, otherUser = null, showFriends = false }) {
   const [myGroups, setMyGroups] = useState([]);
   const [blockedOut, setBlockedOut] = useState(new Set());
   const [blockedIn, setBlockedIn] = useState(new Set());
+  const [gamification, setGamification] = useState(null);
+  const [showDailyBonus, setShowDailyBonus] = useState(false);
+  const [claimingDailyBonus, setClaimingDailyBonus] = useState(false);
 
   const [language, setLanguage] = useState(localStorage.getItem("lang") || "en");
   const [theme, setTheme] = useState(
@@ -73,6 +80,88 @@ function MainLayout({ children, otherUser = null, showFriends = false }) {
     document.documentElement.style.colorScheme = theme;
     localStorage.setItem("theme", theme);
   }, [theme]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const fetchGamification = async () => {
+      try {
+        const { data } = await axios.get(
+          `${window.location.origin}/api/users/gamification/status`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setGamification(data);
+        const dismissedDate = sessionStorage.getItem("dailyBonusDismissedDate");
+        setShowDailyBonus(
+          data.daily_bonus.available &&
+          dismissedDate !== data.daily_bonus.date
+        );
+      } catch (err) {
+        console.error("Error fetching gamification status:", err);
+      }
+    };
+
+    const handleBalanceChange = (event) => {
+      setGamification((current) =>
+        current
+          ? {
+              ...current,
+              balance: event.detail.balance,
+              daily_game: event.detail.dailyGameCompleted
+                ? { ...current.daily_game, completed: true }
+                : current.daily_game,
+            }
+          : current
+      );
+    };
+
+    fetchGamification();
+    window.addEventListener("codula:balance-changed", handleBalanceChange);
+    return () =>
+      window.removeEventListener("codula:balance-changed", handleBalanceChange);
+  }, []);
+
+  const claimDailyBonus = async () => {
+    const token = localStorage.getItem("token");
+    if (!token || claimingDailyBonus) return;
+
+    setClaimingDailyBonus(true);
+    try {
+      const { data } = await axios.post(
+        `${window.location.origin}/api/users/gamification/daily-bonus/claim`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setGamification((current) => ({
+        ...current,
+        balance: data.balance,
+        daily_bonus: {
+          ...current.daily_bonus,
+          available: false,
+        },
+      }));
+      setShowDailyBonus(false);
+    } catch (err) {
+      if (err.response?.status === 409) {
+        setShowDailyBonus(false);
+      } else {
+        console.error("Error claiming daily bonus:", err);
+      }
+    } finally {
+      setClaimingDailyBonus(false);
+    }
+  };
+
+  const dismissDailyBonus = () => {
+    if (gamification?.daily_bonus.date) {
+      sessionStorage.setItem(
+        "dailyBonusDismissedDate",
+        gamification.daily_bonus.date
+      );
+    }
+    setShowDailyBonus(false);
+  };
 
 
   useEffect(() => {
@@ -388,6 +477,32 @@ function MainLayout({ children, otherUser = null, showFriends = false }) {
         </div>
 
         <div className="navbar-right">
+          <button
+            type="button"
+            className="currency-pill"
+            onClick={() =>
+              gamification?.daily_bonus.available
+                ? setShowDailyBonus(true)
+                : navigate("/daily-game")
+            }
+            aria-label={
+              gamification?.daily_bonus.available
+                ? t("dailyBonusAvailable")
+                : t("currencyBalance")
+            }
+            title={
+              gamification?.daily_bonus.available
+                ? t("dailyBonusAvailable")
+                : t("currencyBalance")
+            }
+          >
+            <Coins size={18} aria-hidden="true" />
+            <span>{gamification?.balance ?? 0}</span>
+            {gamification?.daily_bonus.available && (
+              <span className="currency-claim-dot" aria-hidden="true" />
+            )}
+          </button>
+
           <div className="topbar-preferences">
             <div className="language-switch" role="group" aria-label="Language">
               <button
@@ -543,6 +658,13 @@ function MainLayout({ children, otherUser = null, showFriends = false }) {
               <span className="icon-box"><Group size={18} /></span>
               <span>{t("groups")}</span>
             </div>
+            <div className="menu-item" onClick={() => navigate("/daily-game")}>
+              <span className="icon-box"><Gamepad2 size={18} /></span>
+              <span>{t("dailyGame")}</span>
+              {gamification && !gamification.daily_game.completed && (
+                <span className="menu-new-dot" aria-label={t("newDailyGame")} />
+              )}
+            </div>
 
             <div className="menu-item" onClick={() => {
               localStorage.removeItem("token");
@@ -667,6 +789,45 @@ function MainLayout({ children, otherUser = null, showFriends = false }) {
 
         </aside>
       </div>
+
+      {showDailyBonus && gamification?.daily_bonus.available && (
+        <div className="daily-bonus-backdrop" role="presentation">
+          <section
+            className="daily-bonus-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="daily-bonus-title"
+          >
+            <button
+              type="button"
+              className="daily-bonus-close"
+              onClick={dismissDailyBonus}
+              aria-label={t("claimLater")}
+            >
+              <X size={20} />
+            </button>
+            <div className="daily-bonus-icon">
+              <Gift size={34} />
+            </div>
+            <p className="daily-bonus-eyebrow">{t("dailyBonus")}</p>
+            <h2 id="daily-bonus-title">{t("dailyBonusTitle")}</h2>
+            <p className="daily-bonus-description">{t("dailyBonusDescription")}</p>
+            <div className="daily-bonus-reward">
+              <Coins size={22} />
+              <strong>+{gamification.daily_bonus.reward}</strong>
+              <span>{t("points")}</span>
+            </div>
+            <button
+              type="button"
+              className="daily-bonus-claim"
+              onClick={claimDailyBonus}
+              disabled={claimingDailyBonus}
+            >
+              {claimingDailyBonus ? t("claiming") : t("claimReward")}
+            </button>
+          </section>
+        </div>
+      )}
     </>
   );
 }

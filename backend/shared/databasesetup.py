@@ -7,8 +7,10 @@ from sqlalchemy import (
     String,
     ForeignKey,
     DateTime,
+    Date,
     func,
-    Text
+    Text,
+    UniqueConstraint
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, backref
@@ -89,6 +91,31 @@ class User(Base):
         backref="blocked_by",   
         lazy="selectin",
     )
+
+class GamificationWallet(Base):
+    __tablename__ = "gamification_wallets"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, unique=True, index=True)
+    balance = Column(Integer, nullable=False, default=0)
+    last_daily_claim = Column(Date, nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
+
+
+class DailyGameCompletion(Base):
+    __tablename__ = "daily_game_completions"
+    __table_args__ = (
+        UniqueConstraint("user_id", "game_date", name="uq_daily_game_user_date"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    game_id = Column(String, nullable=False)
+    game_date = Column(Date, nullable=False, index=True)
+    reward = Column(Integer, nullable=False, default=100)
+    completed_at = Column(DateTime(timezone=True), server_default=func.now())
+
 
 class Post(Base):
     __tablename__ = "posts"

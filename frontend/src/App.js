@@ -22,6 +22,7 @@ import PostPage from "./screens/Post/PostPage";
 import About from './screens/About/About';
 import Questionnaire from './screens/About/Questionnaire'; 
 import Questionnaire2 from './screens/About/Questionnaire2';
+import DailyGame from './screens/Gamification/DailyGame';
 import "./i18n";
 import "./theme.css";
 
@@ -47,7 +48,8 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/questionnaire" element={<Questionnaire />} />
           <Route path="/questionnaire/2" element={<Questionnaire2 />} /> 
-          <Route path="/" element={<Auth />} /> 
+          <Route path="/daily-game" element={<DailyGame />} />
+          <Route path="/" element={<Home />} /> 
         </Routes>
     </Router>
   );
