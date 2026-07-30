@@ -69,6 +69,9 @@ function Questionnaire2() {
     return (
       <div
         role="alert"
+        className={`questionnaire-notice questionnaire-notice--${
+          isSuccess ? "success" : "error"
+        }`}
         style={{
           borderRadius: 12,
           padding: "0.9rem 1rem",
@@ -88,6 +91,7 @@ function Questionnaire2() {
     !text ? null : (
       <div
         role="alert"
+        className="questionnaire-notice questionnaire-notice--error"
         style={{
           marginTop: "0.75rem",
           borderRadius: 10,
@@ -106,7 +110,7 @@ function Questionnaire2() {
   return (
     <MainLayout>
       <div
-        className="about-container"
+        className="about-container questionnaire-container"
         style={{
           background: "#1a1a1b",
           color: "#fff",
@@ -130,6 +134,7 @@ function Questionnaire2() {
             {TASKS.map((t) => (
               <div
                 key={t.step}
+                className="questionnaire-section"
                 style={{
                   background: "#222223",
                   borderRadius: "16px",
@@ -139,6 +144,7 @@ function Questionnaire2() {
                 }}
               >
                 <div
+                  className="questionnaire-section-title"
                   style={{
                     color: "#d7dadc",
                     fontWeight: "bold",
@@ -170,6 +176,7 @@ function Questionnaire2() {
                     t.options.map((opt, i) => (
                       <label
                         key={opt}
+                        className="questionnaire-option"
                         style={{
                           display: "flex",
                           alignItems: "center",
@@ -205,6 +212,7 @@ function Questionnaire2() {
             ))}
 
             <button
+              className="questionnaire-submit"
               type="submit"
               disabled={loading}
               style={{

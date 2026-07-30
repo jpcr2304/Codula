@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const initialTheme = localStorage.getItem("theme") || "dark";
+document.documentElement.dataset.theme = initialTheme;
+document.documentElement.style.colorScheme = initialTheme;
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

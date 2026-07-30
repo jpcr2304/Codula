@@ -6,13 +6,23 @@ import "./MainLayout.css";
 import appLogo from "../../images/logo.png";
 import profilePicDefault from "../../images/profile-pic.png";
 import groupDefault from "../../images/group-default.png";
-import portugalFlag from "../../images/pt.png";
-import usaFlag from "../../images/en.png";
 import friend from "../../images/friend.png";
 import axios from "axios";
 import UserHoverCard from "./UserHoverCard";
 import { formatDistanceToNow } from "date-fns";
-import { Bell, User, Home, Users, LogOut, Info, FileText, Group, Pencil } from "lucide-react";
+import {
+  Bell,
+  User,
+  Home,
+  Users,
+  LogOut,
+  Info,
+  FileText,
+  Group,
+  Pencil,
+  Moon,
+  Sun,
+} from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 
@@ -37,8 +47,9 @@ function MainLayout({ children, otherUser = null, showFriends = false }) {
   const [blockedIn, setBlockedIn] = useState(new Set());
 
   const [language, setLanguage] = useState(localStorage.getItem("lang") || "en");
-  const [showLangMenu, setShowLangMenu] = useState(false);
-  const langRef = useRef();
+  const [theme, setTheme] = useState(
+    () => localStorage.getItem("theme") || "dark"
+  );
   const { t, i18n } = useTranslation();
 
   const changeLanguage = (lang) => {
@@ -47,21 +58,21 @@ function MainLayout({ children, otherUser = null, showFriends = false }) {
     i18n.changeLanguage(lang);
   };
 
+  const toggleTheme = () => {
+    setTheme((currentTheme) =>
+      currentTheme === "dark" ? "light" : "dark"
+    );
+  };
 
   useEffect(() => {
     localStorage.setItem("lang", language);
   }, [language]);
 
   useEffect(() => {
-    function handleClickOutside(e) {
-      if (langRef.current && !langRef.current.contains(e.target)) {
-        setShowLangMenu(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
 
 
   useEffect(() => {
@@ -306,7 +317,7 @@ function MainLayout({ children, otherUser = null, showFriends = false }) {
           style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
         >
           <img src={appLogo} alt="App Logo" className="app-logo" />
-          <span className="app-name" style={{ marginLeft: '14px', color: 'white', fontSize: '1rem', fontWeight: 'bold' }}>
+          <span className="app-name">
             Codula
           </span>
         </div>
@@ -377,42 +388,40 @@ function MainLayout({ children, otherUser = null, showFriends = false }) {
         </div>
 
         <div className="navbar-right">
-          <div className="lang-selector" ref={langRef}>
-            <div
-              className="lang-current"
-              onClick={() => setShowLangMenu(!showLangMenu)}
-            >
-              <img
-                src={i18n.language === "pt" ? portugalFlag : usaFlag}
-                alt="Current language"
-                className="flag-icon"
-              />
-              <span className="lang-arrow">▼</span>
+          <div className="topbar-preferences">
+            <div className="language-switch" role="group" aria-label="Language">
+              <button
+                type="button"
+                className={`language-option ${language === "pt" ? "active" : ""}`}
+                onClick={() => changeLanguage("pt")}
+                aria-pressed={language === "pt"}
+              >
+                PT
+              </button>
+              <button
+                type="button"
+                className={`language-option ${language === "en" ? "active" : ""}`}
+                onClick={() => changeLanguage("en")}
+                aria-pressed={language === "en"}
+              >
+                EN
+              </button>
             </div>
 
-            {showLangMenu && (
-              <div className="lang-menu">
-                <div
-                  className="lang-option"
-                  onClick={() => {
-                    changeLanguage("pt");
-                    setShowLangMenu(false);
-                  }}
-                >
-                  <img src="/flags/pt.png" className="flag-icon" /> Português
-                </div>
-
-                <div
-                  className="lang-option"
-                  onClick={() => {
-                    changeLanguage("en");
-                    setShowLangMenu(false);
-                  }}
-                >
-                  <img src="/flags/en.png" className="flag-icon" /> English
-                </div>
-              </div>
-            )}
+            <button
+              type="button"
+              className={`theme-toggle ${theme === "light" ? "is-light" : "is-dark"}`}
+              onClick={toggleTheme}
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+            >
+              <Sun className="theme-toggle__track-icon theme-toggle__sun" size={14} />
+              <Moon className="theme-toggle__track-icon theme-toggle__moon" size={14} />
+              <span className="theme-toggle__thumb">
+                <Sun className="theme-toggle__thumb-sun" size={15} />
+                <Moon className="theme-toggle__thumb-moon" size={15} />
+              </span>
+            </button>
           </div>
           <div className="nav-icons">
             <div className="notif-container" ref={notifRef}>

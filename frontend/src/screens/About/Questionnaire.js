@@ -106,6 +106,7 @@ const QuestionCard = memo(function QuestionCard({ question, form, onChange, pref
 
   return (
     <div
+      className="questionnaire-card"
       style={{
         marginBottom: "1.8rem",
         background: "#1d1d1e",
@@ -115,6 +116,7 @@ const QuestionCard = memo(function QuestionCard({ question, form, onChange, pref
       }}
     >
       <label
+        className="questionnaire-question"
         htmlFor={question.textarea ? inputId : undefined}
         style={{
           display: "block",
@@ -156,6 +158,7 @@ const QuestionCard = memo(function QuestionCard({ question, form, onChange, pref
           {question.options.map((opt) => (
             <label
               key={opt}
+              className="questionnaire-option"
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -273,6 +276,9 @@ export default function Questionnaire() {
     return (
       <div
         role="alert"
+        className={`questionnaire-notice questionnaire-notice--${
+          isSuccess ? "success" : "error"
+        }`}
         style={{
           borderRadius: 12,
           padding: "0.9rem 1rem",
@@ -293,6 +299,7 @@ export default function Questionnaire() {
     return (
       <div
         role="alert"
+        className="questionnaire-notice questionnaire-notice--error"
         style={{
           marginTop: "0.75rem",
           borderRadius: 10,
@@ -312,6 +319,7 @@ export default function Questionnaire() {
   return (
     <MainLayout>
       <div
+        className="about-container questionnaire-container"
         style={{
           background: "#1a1a1b",
           color: "#fff",
@@ -327,6 +335,7 @@ export default function Questionnaire() {
           {["part1", "part2"].map((tab) => (
             <button
               key={tab}
+              className={`questionnaire-tab ${activeTab === tab ? "active" : ""}`}
               onClick={() => setActiveTab(tab)}
               style={{
                 flex: 1,
@@ -357,6 +366,7 @@ export default function Questionnaire() {
                 {GROUPED_QUESTIONS.map((group) => (
                   <div
                     key={group.group}
+                    className="questionnaire-section"
                     style={{
                       background: "#222223",
                       borderRadius: "16px",
@@ -365,6 +375,7 @@ export default function Questionnaire() {
                     }}
                   >
                     <div
+                      className="questionnaire-section-title"
                       style={{
                         color: "#d7dadc",
                         fontWeight: "bold",
@@ -386,6 +397,7 @@ export default function Questionnaire() {
                   </div>
                 ))}
                 <button
+                  className="questionnaire-submit"
                   type="submit"
                   disabled={loading1}
                   style={{
@@ -420,6 +432,7 @@ export default function Questionnaire() {
                 {GROUPED_TASKS.map((group) => (
                   <div
                     key={group.group}
+                    className="questionnaire-section"
                     style={{
                       background: "#222223",
                       borderRadius: "16px",
@@ -428,6 +441,7 @@ export default function Questionnaire() {
                     }}
                   >
                     <div
+                      className="questionnaire-section-title"
                       style={{
                         color: "#d7dadc",
                         fontWeight: "bold",
@@ -449,6 +463,7 @@ export default function Questionnaire() {
                   </div>
                 ))}
                 <button
+                  className="questionnaire-submit"
                   type="submit"
                   disabled={loading2}
                   style={{

@@ -23,6 +23,7 @@ import About from './screens/About/About';
 import Questionnaire from './screens/About/Questionnaire'; 
 import Questionnaire2 from './screens/About/Questionnaire2';
 import "./i18n";
+import "./theme.css";
 
 
 function App() {

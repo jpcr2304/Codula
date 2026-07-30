@@ -16,9 +16,9 @@ const customSelectStyles = {
     ...provided,
     minWidth: 170,
     maxWidth: 220,
-    backgroundColor: "#2a2a2c",
-    color: "#fff",
-    borderColor: state.isFocused ? "#555" : "#3a3c3f",
+    backgroundColor: "var(--surface)",
+    color: "var(--text-strong)",
+    borderColor: state.isFocused ? "#a78bfa" : "var(--border-color)",
     boxShadow: "none",
     "&:hover": { borderColor: "#666" },
     borderRadius: "8px",
@@ -26,8 +26,8 @@ const customSelectStyles = {
   }),
   menu: (provided) => ({
     ...provided,
-    backgroundColor: "#2a2a2c",
-    color: "#fff",
+    backgroundColor: "var(--surface-raised)",
+    color: "var(--text-strong)",
     borderRadius: "8px",
     boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
     marginTop: 4,
@@ -37,22 +37,22 @@ const customSelectStyles = {
   }),
   option: (provided, state) => ({
     ...provided,
-    backgroundColor: state.isFocused ? "#444" : "#2a2a2c",
-    color: "#fff",
+    backgroundColor: state.isFocused ? "var(--surface-hover)" : "var(--surface-raised)",
+    color: "var(--text-strong)",
     fontWeight: state.isSelected ? "bold" : "normal",
     cursor: "pointer",
   }),
   singleValue: (provided) => ({
     ...provided,
-    color: "#fff",
+    color: "var(--text-strong)",
   }),
   dropdownIndicator: (provided) => ({
     ...provided,
-    color: "#ccc",
-    "&:hover": { color: "#fff" },
+    color: "var(--text-muted)",
+    "&:hover": { color: "var(--text-strong)" },
   }),
   indicatorSeparator: () => ({ display: "none" }),
-  input: (provided) => ({ ...provided, color: "#fff" }),
+  input: (provided) => ({ ...provided, color: "var(--text-strong)" }),
 };
 
 export default function Home() {
@@ -167,7 +167,7 @@ export default function Home() {
     const [btnHover, setBtnHover] = useState(false);
 
     return (
-      <div style={{
+      <div className="responsibility-modal-overlay" style={{
         position: "fixed",
         inset: 0,
         background: "rgba(0,0,0,0.6)",
@@ -176,7 +176,7 @@ export default function Home() {
         justifyContent: "center",
         zIndex: 999999
       }}>
-        <div style={{
+        <div className="responsibility-modal" style={{
           background: "#1f1f21",
           border: "1px solid #333",
           borderRadius: 12,

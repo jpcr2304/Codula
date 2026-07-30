@@ -979,7 +979,7 @@ export default function PostList({ posts, user, token, refreshPosts, setPosts, p
                     </li>
                   ))}
                   {likesModal.users.length === 0 && (
-                    <li style={{ color: "#bbb" }}>No likes yet.</li>
+                    <li className="user-modal-empty">No likes yet.</li>
                   )}
                 </ul>
               )}
@@ -1032,7 +1032,7 @@ export default function PostList({ posts, user, token, refreshPosts, setPosts, p
                     </li>
                   ))}
                   {commentLikesModal.users.length === 0 && (
-                    <li style={{ color: "#bbb" }}>No likes yet.</li>
+                    <li className="user-modal-empty">No likes yet.</li>
                   )}
                 </ul>
               )}

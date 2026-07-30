@@ -1,0 +1,976 @@
+:root {
+  --app-bg: #1a1a1b;
+  --topbar-bg: #2a2a2c;
+  --surface: #2a2a2c;
+  --surface-raised: #232325;
+  --surface-soft: #1e1e1f;
+  --surface-hover: #3a3c3f;
+  --post-bg: transparent;
+  --input-bg: #1e1e1f;
+  --control-bg: #1e1e1f;
+  --text-primary: #d7dadc;
+  --text-strong: #ffffff;
+  --text-muted: #9da1ac;
+  --border-color: #3a3c3f;
+  --border-subtle: #2f2f2f;
+  --toggle-thumb: #f4f1ff;
+  --toggle-icon: #292431;
+  --accent: #a78bfa;
+  --accent-hover: #8b5cf6;
+  --accent-soft: rgba(167, 139, 250, 0.13);
+  --on-accent: #1a1722;
+  --shadow-soft: rgba(0, 0, 0, 0.2);
+  --shadow-medium: rgba(0, 0, 0, 0.35);
+  --page-shadow: rgba(0, 0, 0, 0.3);
+}
+
+html[data-theme="light"] {
+  --app-bg: #eeedf2;
+  --topbar-bg: #f7f6f9;
+  --surface: #f8f7fa;
+  --surface-raised: #ffffff;
+  --surface-soft: #e9e7ee;
+  --surface-hover: #e3e0e9;
+  --post-bg: #f8f7fa;
+  --input-bg: #f7f6f9;
+  --control-bg: #eceaf0;
+  --text-primary: #45424d;
+  --text-strong: #211f27;
+  --text-muted: #5f5967;
+  --border-color: #d1ced8;
+  --border-subtle: #dedbe3;
+  --toggle-thumb: #ffffff;
+  --toggle-icon: #62577a;
+  --accent: #6d3fc0;
+  --accent-hover: #57309f;
+  --accent-soft: #e9e0f7;
+  --on-accent: #ffffff;
+  --shadow-soft: rgba(57, 49, 70, 0.1);
+  --shadow-medium: rgba(57, 49, 70, 0.2);
+  --page-shadow: rgba(52, 46, 62, 0.12);
+}
+
+html,
+body,
+#root {
+  background: var(--app-bg);
+  color: var(--text-primary);
+}
+
+body,
+.topbar,
+.post,
+.group-card,
+.create-post-card,
+.create-group-form-card,
+.hover-card,
+.user-modal,
+.confirm-modal,
+.notif-dropdown,
+.search-results,
+input,
+textarea,
+select {
+  transition:
+    background-color 240ms ease,
+    color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 240ms ease;
+}
+
+.app-name {
+  margin-left: 14px;
+  color: var(--text-strong);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+html[data-theme="light"] .topbar {
+  background: var(--topbar-bg);
+  border-bottom: 1px solid var(--border-subtle);
+  box-shadow: 0 5px 18px rgba(54, 49, 62, 0.07);
+}
+
+html[data-theme="light"] .user-name,
+html[data-theme="light"] .profile-section h3,
+html[data-theme="light"] .author-name,
+html[data-theme="light"] .suggestion-name,
+html[data-theme="light"] .tag-title,
+html[data-theme="light"] .search-name,
+html[data-theme="light"] .right-sidebar strong,
+html[data-theme="light"] .profile-nav li.active,
+html[data-theme="light"] .user-modal-info strong,
+html[data-theme="light"] .group-info h4,
+html[data-theme="light"] .group-info strong,
+html[data-theme="light"] .group-title-section h1,
+html[data-theme="light"] .create-group-form-card h3,
+html[data-theme="light"] .edit-profile-form h2,
+html[data-theme="light"] .select-group label,
+html[data-theme="light"] .extra-field label,
+html[data-theme="light"] .card-header h2 {
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .user-username,
+html[data-theme="light"] .profile-section p,
+html[data-theme="light"] .author-username,
+html[data-theme="light"] .suggestion-followers,
+html[data-theme="light"] .tag-postcount,
+html[data-theme="light"] .search-username,
+html[data-theme="light"] .post-content,
+html[data-theme="light"] .comment-content,
+html[data-theme="light"] .post-created-time,
+html[data-theme="light"] .post-edited-time,
+html[data-theme="light"] .group-info p,
+html[data-theme="light"] .group-title-section p,
+html[data-theme="light"] .friends-empty,
+html[data-theme="light"] .hover-card,
+html[data-theme="light"] .hover-username,
+html[data-theme="light"] .helper {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="light"] .menu-item {
+  color: var(--text-primary);
+}
+
+html[data-theme="light"] .menu-item:hover,
+html[data-theme="light"] .suggestion-item:hover,
+html[data-theme="light"] .tag-item:hover {
+  background: var(--surface-hover);
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .xp-bar {
+  background: #d9d5e0;
+}
+
+html[data-theme="light"] .search-input,
+html[data-theme="light"] .search-bar {
+  background: var(--input-bg);
+  border-color: var(--border-color);
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .search-input:hover,
+html[data-theme="light"] .search-input:focus,
+html[data-theme="light"] .search-bar:hover,
+html[data-theme="light"] .search-bar:focus {
+  background: var(--surface-raised);
+  border-color: #a78bfa;
+}
+
+html[data-theme="light"] .search-input::placeholder,
+html[data-theme="light"] .search-bar::placeholder {
+  color: var(--text-muted);
+}
+
+html[data-theme="light"] .search-results,
+html[data-theme="light"] .notif-dropdown {
+  background: var(--surface-raised);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+  box-shadow: 0 12px 32px var(--page-shadow);
+}
+
+html[data-theme="light"] .search-result-item {
+  color: var(--text-primary);
+}
+
+html[data-theme="light"] .search-result-item:hover,
+html[data-theme="light"] .notif-item:hover {
+  background: var(--surface-hover);
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .notif-item {
+  border-bottom-color: var(--border-subtle);
+}
+
+html[data-theme="light"] .notif-time,
+html[data-theme="light"] .notif-empty {
+  color: var(--text-muted);
+}
+
+html[data-theme="light"] .icon-btn {
+  background: rgba(139, 92, 246, 0.11);
+}
+
+html[data-theme="light"] .right-title,
+html[data-theme="light"] .menu-title,
+html[data-theme="light"] .search-section-title,
+html[data-theme="light"] .menu-item .icon-box svg,
+html[data-theme="light"] .icon-btn svg,
+html[data-theme="light"] .create-post-icon svg {
+  color: var(--accent);
+}
+
+html[data-theme="light"] .icon-box {
+  background: var(--accent-soft);
+}
+
+html[data-theme="light"] .create-post-icon {
+  background: var(--accent-soft);
+}
+
+html[data-theme="light"] .notif-count {
+  box-shadow: 0 0 0 2px var(--topbar-bg);
+}
+
+html[data-theme="light"] * {
+  scrollbar-color: var(--accent) #eeedf2;
+}
+
+html[data-theme="light"] *::-webkit-scrollbar-track,
+html[data-theme="light"] .search-results::-webkit-scrollbar-track,
+html[data-theme="light"] .notif-dropdown::-webkit-scrollbar-track {
+  background: #eeedf2;
+}
+
+html[data-theme="light"] *::-webkit-scrollbar-thumb,
+html[data-theme="light"] .search-results::-webkit-scrollbar-thumb {
+  background-color: var(--accent);
+  border-color: #eeedf2;
+}
+
+/* Posts and comments */
+
+html[data-theme="light"] .create-post-box {
+  background: var(--surface);
+  border-color: var(--border-subtle);
+  color: var(--text-strong);
+  box-shadow: 0 4px 14px var(--shadow-soft);
+}
+
+html[data-theme="light"] .create-post-box:hover {
+  background: var(--surface-hover);
+}
+
+html[data-theme="light"] .create-post-text {
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .post-filter {
+  background: var(--surface);
+  border-color: #c8c1dc;
+}
+
+html[data-theme="light"] .filter-button {
+  color: #665e78;
+}
+
+html[data-theme="light"] .filter-button:hover {
+  background: #e9e4f2;
+  color: #322c40;
+}
+
+html[data-theme="light"] .filter-button.active {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 2px 9px rgba(76, 42, 134, 0.24);
+}
+
+html[data-theme="light"] .filter-button.active:hover {
+  background: var(--accent-hover);
+  color: #ffffff;
+}
+
+html[data-theme="light"] label[for="post-type-filter"] {
+  color: var(--text-strong) !important;
+  font-weight: 600;
+}
+
+html[data-theme="light"] .post {
+  background: var(--post-bg);
+  color: var(--text-primary);
+  box-shadow: 0 4px 16px var(--shadow-soft);
+}
+
+html[data-theme="light"] .posts:not(.single-post-page) .post:hover {
+  background: #f0eef4;
+}
+
+html[data-theme="light"] .posts h2,
+html[data-theme="light"] .posts h4,
+html[data-theme="light"] .posts p,
+html[data-theme="light"] .groups-section > p,
+html[data-theme="light"] .groups-section > h4 {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="light"] .post:not(:last-child)::after {
+  background: linear-gradient(
+    to right,
+    rgba(120, 112, 132, 0.02),
+    rgba(105, 96, 118, 0.18),
+    rgba(120, 112, 132, 0.02)
+  );
+}
+
+html[data-theme="light"] .post-actions button,
+html[data-theme="light"] .post-comments .comment-actions button,
+html[data-theme="light"] .comment-form button {
+  color: var(--text-primary);
+}
+
+html[data-theme="light"] .post-actions button:hover,
+html[data-theme="light"] .post-comments .comment-actions button:hover {
+  background: rgba(75, 67, 87, 0.08);
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .post-actions .post-menu-dropdown,
+html[data-theme="light"] .post-comments .comment-actions .post-menu-dropdown,
+html[data-theme="light"] .post-comments .comment-actions .comment-menu-dropdown {
+  background: var(--surface-raised);
+  border-color: var(--border-color);
+  color: var(--text-strong);
+  box-shadow: 0 8px 24px var(--page-shadow);
+}
+
+html[data-theme="light"] .post-actions .post-menu-dropdown button,
+html[data-theme="light"] .post-comments .comment-actions .post-menu-dropdown button,
+html[data-theme="light"] .post-comments .comment-actions .comment-menu-dropdown button {
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .post-actions .post-menu-dropdown button:hover,
+html[data-theme="light"] .post-comments .comment-actions .post-menu-dropdown button:hover,
+html[data-theme="light"] .post-comments .comment-actions .comment-menu-dropdown button:hover {
+  background: var(--surface-hover);
+}
+
+html[data-theme="light"] .post-meta-box {
+  background: #f0eef4;
+}
+
+html[data-theme="light"] .post-content blockquote,
+html[data-theme="light"] .comment-content blockquote {
+  background: #ebeef3;
+  color: #525866;
+}
+
+html[data-theme="light"] .tag-badge {
+  border-color: #817a8e;
+  color: #5f596a;
+}
+
+html[data-theme="light"] .tag-badge:hover,
+html[data-theme="light"] .tag-badge:focus {
+  background: #e5e2ea;
+  border-color: #4b4653;
+  color: #2c2931;
+}
+
+html[data-theme="light"] .post.type-snippet {
+  border-color: #7542c2;
+  box-shadow:
+    0 0 0 2px rgba(117, 66, 194, 0.12),
+    0 4px 16px rgba(88, 51, 143, 0.16);
+}
+
+html[data-theme="light"] .codula-code-block code,
+html[data-theme="light"] .codula-code-block code span {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Forms, cards and dropdowns */
+
+html[data-theme="light"] .create-post-page,
+html[data-theme="light"] .form-container,
+html[data-theme="light"] .groups-section {
+  background: var(--app-bg);
+  color: var(--text-primary);
+}
+
+html[data-theme="light"] .create-post-card,
+html[data-theme="light"] .create-group-form-card,
+html[data-theme="light"] .form-container,
+html[data-theme="light"] .friends-section,
+html[data-theme="light"] .hover-card,
+html[data-theme="light"] .user-modal,
+html[data-theme="light"] .confirm-modal {
+  background: var(--surface);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  box-shadow: 0 8px 24px var(--page-shadow);
+}
+
+html[data-theme="light"] .responsibility-modal {
+  background: var(--surface-raised) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 12px 36px var(--page-shadow) !important;
+}
+
+html[data-theme="light"] input:not([type="radio"]):not([type="checkbox"]),
+html[data-theme="light"] textarea,
+html[data-theme="light"] select,
+html[data-theme="light"] .extra-field input[type="text"],
+html[data-theme="light"] .extra-field input[type="file"],
+html[data-theme="light"] .input-with-remove input,
+html[data-theme="light"] .edit-profile-form input,
+html[data-theme="light"] .create-group-form textarea,
+html[data-theme="light"] .user-modal-search {
+  background: var(--input-bg) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] input:not([type="radio"]):not([type="checkbox"]):focus,
+html[data-theme="light"] textarea:focus,
+html[data-theme="light"] select:focus {
+  background: var(--surface-raised) !important;
+  border-color: var(--accent) !important;
+}
+
+html[data-theme="light"] input::placeholder,
+html[data-theme="light"] textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+html[data-theme="light"] .react-select__control,
+html[data-theme="light"] .react-select__menu,
+html[data-theme="light"] .react-select__option {
+  background: var(--surface-raised) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="light"] .react-select__single-value,
+html[data-theme="light"] .react-select__input-container,
+html[data-theme="light"] .react-select__placeholder {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="light"] .react-select__control .react-select__input-container input {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .react-select__option--is-focused {
+  background: var(--surface-hover) !important;
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .react-select__option--is-selected {
+  background: var(--accent) !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="light"] .btn-add-link,
+html[data-theme="light"] .btn-add-step,
+html[data-theme="light"] .btn:not(.btn-danger),
+html[data-theme="light"] .load-more-btn {
+  background: var(--surface-soft);
+  border-color: var(--border-color);
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .btn-add-link:hover,
+html[data-theme="light"] .btn-add-step:hover,
+html[data-theme="light"] .btn:not(.btn-danger):hover,
+html[data-theme="light"] .load-more-btn:hover {
+  background: var(--surface-hover);
+}
+
+html[data-theme="light"] .btn-submit {
+  background: #2d2932 !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="light"] .btn-submit:hover {
+  background: #45404a !important;
+}
+
+html[data-theme="light"] .filter-button.active,
+html[data-theme="light"] .btn-join,
+html[data-theme="light"] .btn-follow:not(.following),
+html[data-theme="light"] .language-option.active,
+html[data-theme="light"] .auth-submit,
+html[data-theme="light"] .auth-modal-button,
+html[data-theme="light"] .login-submit,
+html[data-theme="light"] .register-submit {
+  background: var(--accent) !important;
+  color: #ffffff !important;
+  border-color: var(--accent) !important;
+  text-shadow: none;
+}
+
+html[data-theme="light"] .btn-join:hover,
+html[data-theme="light"] .btn-join:focus,
+html[data-theme="light"] .btn-follow:not(.following):hover,
+html[data-theme="light"] .btn-follow:not(.following):focus,
+html[data-theme="light"] .language-option.active:hover,
+html[data-theme="light"] .auth-submit:hover:not(:disabled),
+html[data-theme="light"] .auth-modal-button:hover,
+html[data-theme="light"] .login-submit:hover,
+html[data-theme="light"] .login-submit:focus,
+html[data-theme="light"] .register-submit:hover,
+html[data-theme="light"] .register-submit:focus {
+  background: var(--accent-hover) !important;
+  color: #ffffff !important;
+  border-color: var(--accent-hover) !important;
+}
+
+html[data-theme="light"] .btn-leave,
+html[data-theme="light"] .btn-follow.following {
+  background: var(--surface-raised) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+html[data-theme="light"] .btn-leave:hover,
+html[data-theme="light"] .btn-leave:focus,
+html[data-theme="light"] .btn-follow.following:hover,
+html[data-theme="light"] .btn-follow.following:focus {
+  background: var(--accent-soft) !important;
+  border-color: var(--accent-hover) !important;
+  color: var(--accent-hover) !important;
+}
+
+html[data-theme="light"] .red,
+html[data-theme="light"] .vermelho {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+html[data-theme="light"] .xp-fill,
+html[data-theme="light"] .profile-nav li.active::after {
+  background: var(--accent);
+}
+
+html[data-theme="light"] .profile-nav {
+  border-bottom-color: var(--border-subtle);
+}
+
+html[data-theme="light"] .profile-nav li {
+  color: var(--text-muted);
+}
+
+html[data-theme="light"] .profile-nav li:hover {
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .user-modal-header,
+html[data-theme="light"] .confirm-modal-header {
+  border-bottom-color: var(--border-subtle);
+}
+
+html[data-theme="light"] .user-modal-header h2,
+html[data-theme="light"] .confirm-modal-header h2 {
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .close-btn {
+  color: var(--text-muted);
+}
+
+html[data-theme="light"] .close-btn:hover {
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .clickable,
+html[data-theme="light"] .follow-stats,
+html[data-theme="light"] .group-banner-wrapper,
+html[data-theme="light"] .user-modal-info span,
+html[data-theme="light"] .user-modal-list > p,
+html[data-theme="light"] .user-modal-empty,
+html[data-theme="light"] .hover-stats {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="light"] .clickable:hover {
+  color: var(--accent) !important;
+}
+
+/* Groups */
+
+html[data-theme="light"] .group-card {
+  background: var(--surface);
+  border-color: var(--border-subtle);
+  box-shadow: 0 5px 16px var(--shadow-soft);
+}
+
+html[data-theme="light"] .group-card:hover {
+  background: var(--surface-hover);
+}
+
+html[data-theme="light"] .group-avatar-container {
+  background: var(--surface);
+  border-color: var(--app-bg);
+}
+
+html[data-theme="light"] .group-avatar-circle {
+  background: var(--surface);
+  border-color: var(--app-bg);
+}
+
+html[data-theme="light"] .group-description {
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .btn-outline {
+  border-color: #716979;
+  color: #4f4857;
+}
+
+html[data-theme="light"] .btn-outline:hover {
+  background: var(--surface-hover);
+}
+
+html[data-theme="light"] .extra-field > div > label {
+  background: var(--surface-soft) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .extra-field > div > label > span {
+  color: var(--text-muted) !important;
+}
+
+html[data-theme="light"] .extra-field > div > label > div {
+  background: var(--surface-raised) !important;
+  border: 1px solid var(--border-color);
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] input[type="radio"] {
+  accent-color: var(--accent) !important;
+}
+
+html[data-theme="light"] .invalid-input,
+html[data-theme="light"] .input-error {
+  background: #fff0f2 !important;
+  border-color: #b93852 !important;
+  color: #762438 !important;
+}
+
+html[data-theme="light"] .error-input,
+html[data-theme="light"] .error-msg,
+html[data-theme="light"] .auth-field-error {
+  color: #9c2941 !important;
+}
+
+html[data-theme="light"] .auth-form-error {
+  background: #fff0f2;
+  border-color: #d7a2ad;
+  color: #85283c;
+}
+
+/* Markdown editor */
+
+html[data-theme="light"] .dark-editor .editormd,
+html[data-theme="light"] .dark-editor .CodeMirror,
+html[data-theme="light"] .dark-editor .CodeMirror-scroll,
+html[data-theme="light"] .dark-editor .CodeMirror-gutter,
+html[data-theme="light"] .dark-editor .CodeMirror-gutters,
+html[data-theme="light"] .dark-editor .CodeMirror-vscrollbar,
+html[data-theme="light"] .dark-editor .CodeMirror-hscrollbar {
+  background: #f5f4f7 !important;
+  color: #34313a !important;
+}
+
+html[data-theme="light"] .dark-editor .CodeMirror-line,
+html[data-theme="light"] .dark-editor .CodeMirror-line > span,
+html[data-theme="light"] .dark-editor .CodeMirror-line > span > span,
+html[data-theme="light"] .dark-editor .CodeMirror-code span {
+  color: #34313a !important;
+}
+
+html[data-theme="light"] .dark-editor .CodeMirror-gutters {
+  border-right-color: var(--border-color) !important;
+}
+
+html[data-theme="light"] .dark-editor .CodeMirror-gutter {
+  color: #827d89 !important;
+}
+
+html[data-theme="light"] .dark-editor .CodeMirror-cursor {
+  border-left-color: #34313a !important;
+}
+
+html[data-theme="light"] .dark-editor .CodeMirror-selected {
+  background: #d8d3e1 !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-toolbar {
+  background: #eceaf0 !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-toolbar li a {
+  color: #4b4652;
+}
+
+html[data-theme="light"] .dark-editor .editormd-toolbar .editormd-menu li a:hover {
+  background: rgba(72, 64, 82, 0.08) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-toolbar .editormd-menu li a.active {
+  background: var(--accent-soft) !important;
+  border-color: #cbb9e8 !important;
+  color: var(--accent-hover) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dropdown-menu {
+  background: var(--surface-raised) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 0 8px 22px var(--page-shadow) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dropdown-menu::after {
+  border-bottom-color: var(--surface-raised) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dropdown-menu::before {
+  border-bottom-color: var(--border-color) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dropdown-menu > li + li {
+  border-top-color: var(--border-subtle) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dropdown-menu > li > a {
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dropdown-menu > li > a:hover {
+  background: var(--surface-hover) !important;
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-preview,
+html[data-theme="light"] .dark-editor .editormd-html-preview,
+html[data-theme="light"] .dark-editor .codula-markdown-preview {
+  background: var(--surface) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--border-color) !important;
+}
+
+html[data-theme="light"] .editor-loading {
+  background: var(--surface-soft) !important;
+  color: var(--text-muted);
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog {
+  background: var(--surface-raised) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 14px 38px var(--page-shadow) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog-header {
+  background: var(--surface-soft) !important;
+  border-bottom-color: var(--border-color) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog-header:hover {
+  background: var(--surface-hover) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog-title,
+html[data-theme="light"] .dark-editor .editormd-form label,
+html[data-theme="light"] .dark-editor .editormd-code-toolbar {
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog-close {
+  color: var(--text-muted) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog-close:hover {
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog-container,
+html[data-theme="light"] .dark-editor .editormd-dialog-footer {
+  background: var(--surface-raised) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog-container input,
+html[data-theme="light"] .dark-editor .editormd-dialog-container select,
+html[data-theme="light"] .dark-editor .editormd-dialog-container textarea {
+  background: #f7f6f9 !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog-container .CodeMirror,
+html[data-theme="light"] .dark-editor .editormd-dialog-container .CodeMirror-scroll,
+html[data-theme="light"] .dark-editor .editormd-dialog-container .CodeMirror-gutters {
+  background: #f7f6f9 !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog-footer .editormd-btn,
+html[data-theme="light"] .dark-editor .editormd-dialog-container .editormd-btn,
+html[data-theme="light"] .dark-editor .editormd-dialog-footer button,
+html[data-theme="light"] .dark-editor .editormd-dialog-container button {
+  background: var(--surface-soft) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .dark-editor .editormd-dialog-footer .editormd-btn:hover,
+html[data-theme="light"] .dark-editor .editormd-dialog-container .editormd-btn:hover,
+html[data-theme="light"] .dark-editor .editormd-dialog-footer button:hover,
+html[data-theme="light"] .dark-editor .editormd-dialog-container button:hover {
+  background: var(--surface-hover) !important;
+}
+
+/* Authentication */
+
+html[data-theme="light"] .auth-page {
+  background: var(--app-bg);
+  color: var(--text-primary);
+}
+
+html[data-theme="light"] .auth-visual {
+  background: #e8e4ef;
+}
+
+html[data-theme="light"] .auth-visual h1,
+html[data-theme="light"] .auth-mobile-brand,
+html[data-theme="light"] .auth-brand,
+html[data-theme="light"] .auth-card-header h2,
+html[data-theme="light"] .auth-brand-right span,
+html[data-theme="light"] .auth-modal h3 {
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .auth-description,
+html[data-theme="light"] .auth-card-header > p,
+html[data-theme="light"] .auth-card-header > span,
+html[data-theme="light"] .auth-switch,
+html[data-theme="light"] .auth-modal p {
+  color: var(--text-primary);
+}
+
+html[data-theme="light"] .auth-form-panel {
+  background: var(--surface);
+}
+
+html[data-theme="light"] .auth-field label {
+  color: var(--text-strong);
+}
+
+html[data-theme="light"] .edit-profile-form label {
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .auth-field input {
+  background: var(--surface-raised) !important;
+  color: var(--text-strong) !important;
+  -webkit-text-fill-color: var(--text-strong) !important;
+  caret-color: var(--text-strong);
+}
+
+html[data-theme="light"] .auth-field input:-webkit-autofill,
+html[data-theme="light"] .auth-field input:-webkit-autofill:hover,
+html[data-theme="light"] .auth-field input:-webkit-autofill:focus,
+html[data-theme="light"] .auth-field input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--surface-raised) inset !important;
+  box-shadow: 0 0 0 1000px var(--surface-raised) inset !important;
+  -webkit-text-fill-color: var(--text-strong) !important;
+  caret-color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .auth-switch a {
+  color: var(--accent) !important;
+}
+
+html[data-theme="light"] .auth-switch a:hover {
+  color: var(--accent-hover) !important;
+}
+
+html[data-theme="light"] .auth-modal {
+  background: var(--surface-raised);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+html[data-theme="light"] .auth-modal-close {
+  color: var(--text-muted);
+}
+
+/* About and feedback screens */
+
+html[data-theme="light"] .about-container,
+html[data-theme="light"] .questionnaire-page,
+html[data-theme="light"] .questionnaire-container {
+  background: var(--surface) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="light"] .questionnaire-section,
+html[data-theme="light"] .questionnaire-card {
+  background: #efedf3 !important;
+  color: var(--text-primary) !important;
+  border-color: var(--accent) !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="light"] .questionnaire-section-title,
+html[data-theme="light"] .questionnaire-question,
+html[data-theme="light"] .questionnaire-option {
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .questionnaire-tab {
+  background: transparent !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+html[data-theme="light"] .questionnaire-tab.active {
+  background: var(--surface-hover) !important;
+  color: var(--text-strong) !important;
+}
+
+html[data-theme="light"] .questionnaire-submit {
+  background: #2d2932 !important;
+  color: #ffffff !important;
+}
+
+html[data-theme="light"] .questionnaire-notice--success {
+  background: #e4f3e7 !important;
+  border-color: #7bab84 !important;
+  color: #275e31 !important;
+}
+
+html[data-theme="light"] .questionnaire-notice--error {
+  background: #fff0f2 !important;
+  border-color: #d7a2ad !important;
+  color: #85283c !important;
+}
+
+html[data-theme="light"] .about-container h1,
+html[data-theme="light"] .about-container p,
+html[data-theme="light"] .about-container strong,
+html[data-theme="light"] .about-container b {
+  color: inherit !important;
+}
+
+@media (max-width: 900px) {
+  .topbar-preferences {
+    gap: 7px;
+  }
+
+  .language-option {
+    min-width: 30px;
+    padding: 0 6px;
+  }
+
+  .theme-toggle {
+    width: 54px;
+  }
+
+  .theme-toggle__thumb {
+    transform: translateX(22px);
+  }
+}
