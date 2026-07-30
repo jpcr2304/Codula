@@ -1296,7 +1296,10 @@ export default function PostList({ posts, user, token, refreshPosts, setPosts, p
                   </button>
 
                   {openMenuPost === post.id && (
-                    <div className="post-menu-dropdown">
+                    <div
+                      className="post-menu-dropdown"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
@@ -1305,7 +1308,12 @@ export default function PostList({ posts, user, token, refreshPosts, setPosts, p
                       >
                         Edit Post
                       </button>
-                      <button onClick={() => handleRemovePost(post.id)}>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleRemovePost(post.id);
+                        }}
+                      >
                         Remove Post
                       </button>
                     </div>
