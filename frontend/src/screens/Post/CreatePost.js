@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "../Profile/Base.css";
 import "./CreatePost.css";
 import "./Editor.css"
+import { mountMarkdownPreview } from "./MarkdownContent";
 import appLogo from "../../images/logo.png";
 import profilePic from "../../images/profile-pic.png";
 import friend from "../../images/friend.png";
@@ -19,10 +20,13 @@ function CreatePost() {
   const navigate = useNavigate();
   const editorRef = useRef(null);
   const tutorialEditorsRef = useRef({});
+  const previewMountRef = useRef(null);
   const [user, setUser] = useState(null);
   const [postType, setPostType] = useState(null);
   const [editor, setEditor] = useState(null);
   const [isEditorLoaded, setIsEditorLoaded] = useState(false);
+  const postTypeRef = useRef(null);
+  postTypeRef.current = postType?.value;
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [userGroups, setUserGroups] = useState([]);
   const [postTypeError, setPostTypeError] = useState(false);
@@ -112,6 +116,15 @@ function CreatePost() {
           markdown: "",
           imageUpload: false,
           emoji: false,
+          onload: function () {
+            previewMountRef.current?.unmount();
+            previewMountRef.current = mountMarkdownPreview(this, {
+              getPostType: () => postTypeRef.current,
+            });
+          },
+          onchange: function () {
+            previewMountRef.current?.render(this.getMarkdown?.() || "");
+          },
           toolbarIcons: () => [
                       "undo", "redo", "|",
                       "bold", "del", "italic", "quote", "|",
@@ -147,6 +160,16 @@ function CreatePost() {
 
     return () => clearInterval(intervalId);
   }, [user, editor]);
+
+  useEffect(() => {
+    return () => previewMountRef.current?.unmount();
+  }, []);
+
+  useEffect(() => {
+    if (editor) {
+      previewMountRef.current?.render(editor.getMarkdown?.() || "");
+    }
+  }, [editor, postType]);
 
 const handleSubmit = async () => {
   if (!postType) {

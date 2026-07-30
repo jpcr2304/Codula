@@ -18,6 +18,15 @@
   color: #d7dadc !important;
 }
 
+.dark-editor .CodeMirror-line,
+.dark-editor .CodeMirror-line > span,
+.dark-editor .CodeMirror-line > span > span,
+.dark-editor .CodeMirror-code span {
+  color: #d7dadc !important;
+  background-color: transparent !important;
+  text-shadow: none !important;
+}
+
 .dark-editor .CodeMirror-cursor {
   border-left: 1px solid #d7dadc !important;
 }
@@ -32,20 +41,30 @@
   color: #d7dadc;
 }
 
+.dark-editor .codula-markdown-preview {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
+  background: #1a1a1b;
+  color: #d7dadc;
+  text-align: left;
+}
+
 .dark-editor .editormd-preview,
 .dark-editor .editormd-html-preview {
   background-color: #1a1a1b !important;
   color: #d7dadc !important;
 }
 
-.dark-editor .editormd-preview pre,
+.dark-editor .editormd-preview-container pre,
 .dark-editor .editormd-html-preview pre {
   background-color: #2a2a2c !important;
   color: #d7dadc !important;
   border: 1px solid #3a3c3f;
 }
 
-.dark-editor .editormd-preview code,
+.dark-editor .editormd-preview-container code,
 .dark-editor .editormd-html-preview code {
   background-color: #2a2a2c !important;
   color: #d7dadc !important;
@@ -99,8 +118,8 @@
   background-color: #1a1a1b !important;
 }
 
-.dark-editor .CodeMirror-activeline-background {
-  background: #2a2a2c !important;
+.dark-editor .CodeMirror .CodeMirror-activeline-background {
+  background-color: transparent !important;
 }
 
 .dark-editor .CodeMirror-gutters {
@@ -188,8 +207,8 @@
   color: #d7dadc !important;
 }
 
-.dark-editor .editormd-preview pre,
-.dark-editor .editormd-preview code,
+.dark-editor .editormd-preview-container pre,
+.dark-editor .editormd-preview-container code,
 .dark-editor .editormd-html-preview pre,
 .dark-editor .editormd-html-preview code {
   background: #2a2a2c !important;
@@ -197,8 +216,8 @@
   border: 1px solid #3a3c3f !important;
 }
 
-.dark-editor .editormd-preview pre li,
-.dark-editor .editormd-preview pre .code-line,
+.dark-editor .editormd-preview-container pre li,
+.dark-editor .editormd-preview-container pre .code-line,
 .dark-editor .editormd-html-preview pre li,
 .dark-editor .editormd-html-preview pre .code-line {
   background: #2a2a2c !important;
@@ -212,14 +231,14 @@
   color: #d7dadc !important;
 }
 
-.dark-editor .editormd-preview input,
+.dark-editor .editormd-preview-container input,
 .dark-editor .editormd-html-preview input {
   background: #2a2a2c !important;
   color: #d7dadc !important;
   border: 1px solid #3a3c3f !important;
 }
 
-.dark-editor .editormd-preview .line-numbers-rows span,
+.dark-editor .editormd-preview-container .line-numbers-rows span,
 .dark-editor .editormd-html-preview .line-numbers-rows span {
   background: #2a2a2c !important;
   color: #888 !important;

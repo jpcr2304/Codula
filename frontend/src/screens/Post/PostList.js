@@ -1,8 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import MarkdownContent from "./MarkdownContent";
 import { FaRegCommentDots } from "react-icons/fa";
 import defaultAvatar from "../../images/friend.png";
 import UserHoverCard from "../Profile/UserHoverCard";
@@ -303,83 +301,6 @@ export default function PostList({ posts, user, token, refreshPosts, setPosts, p
       }
     });
   }, [posts]);
-
-  const getCodeInlineStyle = (postType) => {
-    switch(postType) {
-      case 'snippet':
-        return {
-          background: "#2a0c4a",
-          color: "#ddc4fcff",
-          padding: "2px 6px",
-          borderRadius: "5px",
-          fontSize: "0.97em",
-          fontFamily: "inherit",
-          fontWeight: 500,
-          display: "inline",
-          whiteSpace: "nowrap",
-        };
-      case 'meme':
-        return {
-          background: "#3d2e0f",
-          color: "#f8e3b7ff",
-          padding: "2px 6px",
-          borderRadius: "5px",
-          fontSize: "0.97em",
-          fontFamily: "inherit",
-          fontWeight: 500,
-          display: "inline",
-          whiteSpace: "nowrap",
-        };
-      case 'tutorial':
-        return {
-          background: "#0d3d12",
-          color: "#bbf5c7ff",
-          padding: "2px 6px",
-          borderRadius: "5px",
-          fontSize: "0.97em",
-          fontFamily: "inherit",
-          fontWeight: 500,
-          display: "inline",
-          whiteSpace: "nowrap",
-        };
-      case 'research':
-        return {
-          background: "#5a0f0f",
-          color: "#f1c2c2ff",
-          padding: "2px 6px",
-          borderRadius: "5px",
-          fontSize: "0.97em",
-          fontFamily: "inherit",
-          fontWeight: 500,
-          display: "inline",
-          whiteSpace: "nowrap",
-        };
-      case 'question':
-        return {
-          background: "#0d3d5a",
-          color: "#c0dff7ff",
-          padding: "2px 6px",
-          borderRadius: "5px",
-          fontSize: "0.97em",
-          fontFamily: "inherit",
-          fontWeight: 500,
-          display: "inline",
-          whiteSpace: "nowrap",
-        };
-      default:
-        return {
-          background: "#23222a",
-          color: "#cabcf7ff",
-          padding: "2px 6px",
-          borderRadius: "5px",
-          fontSize: "0.97em",
-          fontFamily: "inherit",
-          fontWeight: 500,
-          display: "inline",
-          whiteSpace: "nowrap",
-        };
-    }
-  };
 
   const getLikeColorForType = (postType) => {
     switch(postType) {
@@ -904,68 +825,7 @@ export default function PostList({ posts, user, token, refreshPosts, setPosts, p
           </div>
 
           <div className="comment-content">
-            <ReactMarkdown
-              components={{
-                blockquote({ node, ...props }) {
-                  const onlyCode =
-                    node.children &&
-                    node.children.length === 1 &&
-                    node.children[0].type === "element" &&
-                    (node.children[0].tagName === "pre" || node.children[0].tagName === "code");
-
-                  if (onlyCode) {
-                    return (
-                      <blockquote className="quote-code">{props.children}</blockquote>
-                    );
-                  }
-                  return (
-                    <blockquote {...props} />
-                  );
-                },
-                p({ node, children, ...props }) {
-                  const isOnlyInlineCode = node.children && 
-                    node.children.length === 1 && 
-                    node.children[0].type === "element" && 
-                    node.children[0].tagName === "code";
-                  
-                  return isOnlyInlineCode ? (
-                    <span {...props}>{children}</span>
-                  ) : (
-                    <p {...props}>{children}</p>
-                  );
-                },
-                code({ node, className, children, inline, ...props }) {
-                  const isInline = inline || (node && node.tagName === 'code' && !className?.includes('language-'));
-                  
-                  if (isInline) {
-                    return (
-                      <code
-                        className={className}
-                        style={getCodeInlineStyle(postType)}
-                        {...props}
-                      >
-                        {children}
-                      </code>
-                    );
-                  }
-                
-                  const match = /language-(\w+)/.exec(className || "");
-                  return (
-                    <SyntaxHighlighter
-                      style={oneDark}
-                      language={match ? match[1] : "plaintext"}
-                      PreTag="div"
-                      {...props}
-                    >
-                      {String(children).replace(/\n$/, "")}
-                    </SyntaxHighlighter>
-                  );
-                },
-                
-              }}
-            >
-              {c.content}
-            </ReactMarkdown>
+            <MarkdownContent content={c.content} postType={postType} />
 
           </div>
 
@@ -1275,73 +1135,18 @@ export default function PostList({ posts, user, token, refreshPosts, setPosts, p
 
               <PostMeta post={post} />
 
-              <ReactMarkdown
-                components={{
-                  blockquote({ node, ...props }) {
-                    const onlyCode =
-                      node.children &&
-                      node.children.length === 1 &&
-                      node.children[0].type === "element" &&
-                      (node.children[0].tagName === "pre" || node.children[0].tagName === "code");
-
-                    if (onlyCode) {
-                      return (
-                        <blockquote className="quote-code">{props.children}</blockquote>
-                      );
-                    }
-                    return (
-                      <blockquote {...props} />
-                    );
-                  },
-                  p({ node, children, ...props }) {
-                    const isOnlyInlineCode = node.children && 
-                      node.children.length === 1 && 
-                      node.children[0].type === "element" && 
-                      node.children[0].tagName === "code";
-                    
-                    return isOnlyInlineCode ? (
-                      <span {...props}>{children}</span>
-                    ) : (
-                      <p {...props}>{children}</p>
-                    );
-                  },
-                  code({ node, className, children, inline, ...props }) {
-                    const isInline = inline || (node && node.tagName === 'code' && !className?.includes('language-'));
-                    
-                    if (isInline) {
-                      return (
-                        <code
-                          className={className}
-                          style={getCodeInlineStyle(post.type)}
-                          {...props}
-                        >
-                          {children}
-                        </code>
-                      );
-                    }
-
-                    const match = /language-(\w+)/.exec(className || "");
-                    return (
-                      <SyntaxHighlighter
-                        style={oneDark}
-                        language={match ? match[1] : "plaintext"}
-                        PreTag="div"
-                        {...props}
-                      >
-                        {String(children).replace(/\n$/, "")}
-                      </SyntaxHighlighter>
-                    );
-                  },
-                }}
-              >
-                {previewMode
-                  ? sanitizeForPreview(post.content, {
-                      maxLines: MAX_PREVIEW_LINES,
-                      maxConsecutiveEmpty: 5,
-                      maxConsecutiveDuplicate: 3,
-                    }) + (isLongPost ? "\n\n…" : "")
-                  : post.content}
-              </ReactMarkdown>
+              <MarkdownContent
+                postType={post.type}
+                content={
+                  previewMode
+                    ? sanitizeForPreview(post.content, {
+                        maxLines: MAX_PREVIEW_LINES,
+                        maxConsecutiveEmpty: 5,
+                        maxConsecutiveDuplicate: 3,
+                      }) + (isLongPost ? "\n\n…" : "")
+                    : post.content
+                }
+              />
 
               {post.meme_url && (
                 <div className="post-image-wrapper" style={{ marginTop: "1rem" }}>

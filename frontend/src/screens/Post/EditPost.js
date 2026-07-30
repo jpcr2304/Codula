@@ -5,15 +5,19 @@ import MainLayout from "../Profile/MainLayout";
 import Select from "react-select";
 import "./CreatePost.css";
 import "./Editor.css";
+import { mountMarkdownPreview } from "./MarkdownContent";
 
 function EditPost() {
   const { id } = useParams();
   const navigate = useNavigate();
   const editorRef = useRef(null);
+  const previewMountRef = useRef(null);
+  const postTypeRef = useRef(null);
   const [editor, setEditor] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [post, setPost] = useState(null);
+  postTypeRef.current = post?.type;
 
   const [content, setContent] = useState("");
   const [language, setLanguage] = useState("");
@@ -88,6 +92,15 @@ function EditPost() {
           path: "/editor.md/lib/",
           saveHTMLToTextarea: true,
           emoji: false,
+          onload: function () {
+            previewMountRef.current?.unmount();
+            previewMountRef.current = mountMarkdownPreview(this, {
+              getPostType: () => postTypeRef.current,
+            });
+          },
+          onchange: function () {
+            previewMountRef.current?.render(this.getMarkdown?.() || "");
+          },
           toolbarIcons: () => [
             "undo", "redo", "|",
             "bold", "del", "italic", "quote", "|",
@@ -121,6 +134,10 @@ function EditPost() {
 
     return () => clearInterval(intervalId);
   }, [editor, content, loading]);
+
+  useEffect(() => {
+    return () => previewMountRef.current?.unmount();
+  }, []);
 
   const handleUpdate = async () => {
     const markdown = editor?.getMarkdown?.() || "";
