@@ -680,10 +680,10 @@ function MainLayout({ children, otherUser = null, showFriends = false }) {
               <span className="icon-box"><Info size={18} /></span>
               <span>{t("about")}</span>
             </div>
-            <div className="menu-item" onClick={() => navigate("/questionnaire")}>
+            {/*<div className="menu-item" onClick={() => navigate("/questionnaire")}>
               <span className="icon-box"><FileText size={18} /></span>
               <span>{t("feedback")}</span>
-            </div>
+            </div>*/}
 
           </div>
         </aside>

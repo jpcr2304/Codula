@@ -237,12 +237,7 @@
   right: 0;
   bottom: -6px;
   height: 1px;
-  background: linear-gradient(
-    to right,
-    rgba(255,255,255,0.04),
-    rgba(160,160,160,0.13),
-    rgba(255,255,255,0.04)
-  );
+  background: rgba(160,160,160,0.13);
   pointer-events: none;
 }
 

@@ -78,7 +78,7 @@ input::placeholder {
 }
 
 .login-submit {
-    background: linear-gradient(90deg, #a78bfa 55%, #8b5cf6 100%);
+    background: #a78bfa;
     color: #23222a;
     font-weight: 700;
     border: none;
@@ -94,7 +94,7 @@ input::placeholder {
 }
 
 .login-submit:hover, .login-submit:focus {
-    background: linear-gradient(90deg, #c4b5fd 55%, #a78bfa 100%);
+    background: #c4b5fd;
     color: #1a1a1b;
     box-shadow: 0 3px 12px 0 #a78bfa33;
 }

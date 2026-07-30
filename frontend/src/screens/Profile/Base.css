@@ -391,7 +391,7 @@ body {
 }
 
 .filter-button.active {
-  background: linear-gradient(90deg, #A78BFA 60%, #8B5CF6 100%);
+  background: #A78BFA;
   color: #23222a;
   box-shadow: 0 2px 8px 0 rgba(168,139,250,0.08);
   font-weight: 700;

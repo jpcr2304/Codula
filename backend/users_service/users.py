@@ -3,6 +3,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import Query
 from typing import List, Optional
 from pydantic import BaseModel, Field, HttpUrl, validator, constr, AnyUrl
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 from passlib.context import CryptContext
 import jwt
@@ -20,6 +21,7 @@ from shared.databasesetup import (
     Notification as NotificationModel,
     GamificationWallet,
     DailyGameCompletion,
+    DailyGameAttempt,
 )
 
 DAILY_LOGIN_REWARD = 50
@@ -226,7 +228,19 @@ def localized_text(value, language: str):
     return value.get(normalized_language) or value.get("en") or next(iter(value.values()), "")
 
 
-def daily_game_payload(game, today: date, language: str, completed: bool):
+def daily_game_payload(
+    game,
+    today: date,
+    language: str,
+    attempt=None,
+    legacy_completion=None,
+):
+    attempted = attempt is not None or legacy_completion is not None
+    was_correct = (
+        bool(attempt.correct)
+        if attempt is not None
+        else legacy_completion is not None
+    )
     return {
         "id": game["id"],
         "date": today.isoformat(),
@@ -236,8 +250,12 @@ def daily_game_payload(game, today: date, language: str, completed: bool):
         "code": game["code"],
         "options": game["options"],
         "reward": DAILY_GAME_REWARD,
-        "completed": completed,
-        "explanation": localized_text(game.get("explanation", ""), language) if completed else None,
+        "completed": attempted,
+        "attempted": attempted,
+        "was_correct": was_correct if attempted else None,
+        "selected_option": attempt.selected_option if attempt is not None else None,
+        "correct_option": game["correct_option"] if attempted else None,
+        "explanation": localized_text(game.get("explanation", ""), language) if attempted else None,
     }
 
 @router.post("/register")
@@ -328,6 +346,14 @@ def gamification_status(
         )
         .first()
     )
+    attempt = (
+        db.query(DailyGameAttempt)
+        .filter(
+            DailyGameAttempt.user_id == current.id,
+            DailyGameAttempt.game_date == today,
+        )
+        .first()
+    )
 
     return {
         "balance": wallet.balance if wallet else 0,
@@ -338,7 +364,7 @@ def gamification_status(
         },
         "daily_game": {
             "id": game["id"],
-            "completed": completion is not None,
+            "completed": attempt is not None or completion is not None,
             "reward": DAILY_GAME_REWARD,
         },
     }
@@ -386,7 +412,70 @@ def daily_game(
         )
         .first()
     )
-    return daily_game_payload(game, today, language, completion is not None)
+    attempt = (
+        db.query(DailyGameAttempt)
+        .filter(
+            DailyGameAttempt.user_id == current.id,
+            DailyGameAttempt.game_date == today,
+        )
+        .first()
+    )
+    return daily_game_payload(
+        game,
+        today,
+        language,
+        attempt=attempt,
+        legacy_completion=completion,
+    )
+
+
+@router.get("/gamification/leaderboard")
+def gamification_leaderboard(
+    current=Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    balance = func.coalesce(GamificationWallet.balance, 0)
+    ranked_users = (
+        db.query(UserModel, balance.label("balance"))
+        .outerjoin(
+            GamificationWallet,
+            GamificationWallet.user_id == UserModel.id,
+        )
+        .order_by(balance.desc(), UserModel.id.asc())
+        .all()
+    )
+
+    current_index = next(
+        (index for index, (user, _) in enumerate(ranked_users) if user.id == current.id),
+        None,
+    )
+    visible_indices = set(range(min(3, len(ranked_users))))
+    if current_index is not None:
+        visible_indices.update(
+            index
+            for index in range(current_index - 1, current_index + 2)
+            if 0 <= index < len(ranked_users)
+        )
+
+    entries = []
+    for index in sorted(visible_indices):
+        user, user_balance = ranked_users[index]
+        entries.append(
+            {
+                "rank": index + 1,
+                "user_id": user.id,
+                "name": f"{user.firstname} {user.lastname}",
+                "username": user.username,
+                "image_url": user.image_url,
+                "balance": int(user_balance or 0),
+                "is_current_user": user.id == current.id,
+            }
+        )
+
+    return {
+        "entries": entries,
+        "total_users": len(ranked_users),
+    }
 
 
 @router.post("/gamification/daily-game/answer")
@@ -411,7 +500,26 @@ def answer_daily_game(
         )
         .first()
     )
+    attempt = (
+        db.query(DailyGameAttempt)
+        .filter(
+            DailyGameAttempt.user_id == current.id,
+            DailyGameAttempt.game_date == today,
+        )
+        .first()
+    )
     wallet = get_wallet(db, current.id, create=True)
+
+    if attempt:
+        return {
+            "correct": bool(attempt.correct),
+            "already_completed": True,
+            "reward": 0,
+            "balance": wallet.balance,
+            "selected_option": attempt.selected_option,
+            "correct_option": game["correct_option"],
+            "explanation": localized_text(game.get("explanation", ""), answer.language),
+        }
 
     if completion:
         return {
@@ -419,34 +527,46 @@ def answer_daily_game(
             "already_completed": True,
             "reward": 0,
             "balance": wallet.balance,
+            "selected_option": None,
+            "correct_option": game["correct_option"],
             "explanation": localized_text(game.get("explanation", ""), answer.language),
         }
 
-    if answer.option_index != game["correct_option"]:
-        return {
-            "correct": False,
-            "already_completed": False,
-            "reward": 0,
-            "balance": wallet.balance,
-        }
+    is_correct = answer.option_index == game["correct_option"]
+    reward = DAILY_GAME_REWARD if is_correct else 0
 
-    wallet.balance = (wallet.balance or 0) + DAILY_GAME_REWARD
     db.add(
-        DailyGameCompletion(
+        DailyGameAttempt(
             user_id=current.id,
             game_id=game["id"],
             game_date=today,
-            reward=DAILY_GAME_REWARD,
+            selected_option=answer.option_index,
+            correct=is_correct,
+            reward=reward,
         )
     )
+
+    if is_correct:
+        wallet.balance = (wallet.balance or 0) + DAILY_GAME_REWARD
+        db.add(
+            DailyGameCompletion(
+                user_id=current.id,
+                game_id=game["id"],
+                game_date=today,
+                reward=DAILY_GAME_REWARD,
+            )
+        )
+
     db.commit()
     db.refresh(wallet)
 
     return {
-        "correct": True,
+        "correct": is_correct,
         "already_completed": False,
-        "reward": DAILY_GAME_REWARD,
+        "reward": reward,
         "balance": wallet.balance,
+        "selected_option": answer.option_index,
+        "correct_option": game["correct_option"],
         "explanation": localized_text(game.get("explanation", ""), answer.language),
     }
 

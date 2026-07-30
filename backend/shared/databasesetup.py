@@ -117,6 +117,22 @@ class DailyGameCompletion(Base):
     completed_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+class DailyGameAttempt(Base):
+    __tablename__ = "daily_game_attempts"
+    __table_args__ = (
+        UniqueConstraint("user_id", "game_date", name="uq_daily_game_attempt_user_date"),
+    )
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    game_id = Column(String, nullable=False)
+    game_date = Column(Date, nullable=False, index=True)
+    selected_option = Column(Integer, nullable=False)
+    correct = Column(Boolean, nullable=False, default=False)
+    reward = Column(Integer, nullable=False, default=0)
+    attempted_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 class Post(Base):
     __tablename__ = "posts"
 

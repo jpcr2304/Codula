@@ -299,12 +299,7 @@ html[data-theme="light"] .groups-section > h4 {
 }
 
 html[data-theme="light"] .post:not(:last-child)::after {
-  background: linear-gradient(
-    to right,
-    rgba(120, 112, 132, 0.02),
-    rgba(105, 96, 118, 0.18),
-    rgba(120, 112, 132, 0.02)
-  );
+  background: rgba(105, 96, 118, 0.18);
 }
 
 html[data-theme="light"] .post-actions button,
